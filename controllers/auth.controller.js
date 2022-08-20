@@ -1,5 +1,11 @@
 import { User } from "../models/User.js";
-import jwt from "jsonwebtoken";
+import { generateRefreshToken, generateToken } from "../utils/tokenGenerator.js";
+
+const authErrorsCollection = {
+  1100: "Username(email) already exists",
+  1101: "Username(email) does not exist" ,
+  1102: "Wrong password",
+};
 
 export const login = async (req,res) =>{
   const { email, password } = req.body;
@@ -7,29 +13,26 @@ export const login = async (req,res) =>{
   try {
     const user = await User.findOne({email});
     if(!user){
-      throw { code: 1101 };
-    }
+      throw new Error(1101);
+    } 
     else{
       const userPassword = await user.comparePassword(password);
       if(!userPassword){
-        throw { code: 1102 };
+        throw new Error(1102);
       }
       else{
-        //Token Generate
-        const token = jwt.sign({ uid: user._id }, process.env.JWT_SECRET);
-        return res.status(200).send({ token });
+        //Token
+        const { token, expiresIn } = generateToken(user._id);
+        generateRefreshToken(user._id, res);
+       
+        return res.status(200).send({ token, expiresIn });
       }
     }
   }
   catch (error) {
-    console.log(error.code);
-    switch(error.code){
-      case 1101: res.status(403).send({ errors: "Username(email) does not exist" }); break;
-      case 1102: res.status(403).send({ errors: "Wrong password" }); break;
-      default: res.status(500).send({ errors: "Server error" }); break;
-    }
+    return res.status(500).send({ errors: authErrorsCollection[error.message] || error.message });
   }
-}
+};
 
 export const register = async (req,res) =>{
   const { email, password, name, lastName } = req.body;
@@ -37,7 +40,7 @@ export const register = async (req,res) =>{
   try {
     const user = await User.findOne({ email });
     if(user){
-      throw { code: 1100 }
+      throw new Error(1100);
     }
     else{
       const user = new User({ email,password,name,lastName });
@@ -46,9 +49,36 @@ export const register = async (req,res) =>{
     }
   }
   catch (error) {
-    switch(error.code){
-      case 1100: return res.status(400).send({ errors: "the user(email) already exists" });
-      default: return res.status(500).send({ errors: "Server error" });
-    }
+    return res.status(500).send({ errors: authErrorsCollection[error.message] || error.message });  
+  }
+};
+
+
+export const prueba = async (req, res) => {
+  const uid = req.uid;
+  
+  try {
+    const user = await User.findById(uid).lean();
+    return res.status(200).send({ id: user._id, email: user.email, name: `${user.name} ${user.lastName}` });
+  }
+  catch (error) {
+    return res.status(500).send({ errors: "Server error" });
+  }
+};
+
+export const refreshToken = (req, res) => {
+  const uid = req.uid;
+  try {
+    const {token, expiresIn} = generateToken(uid);
+    return res.status(200).send({token, expiresIn});
+  }
+  catch (error) {
+    return res.status(500).send({ errors: "Server error" });
   }
 }
+
+
+export const logout = (req,res) => {
+  res.clearCookie("refresh_token_api_od");
+  res.json({ok: true});
+};

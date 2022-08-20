@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 import bcrypt from "bcryptjs";
 
-
 const userSchema = new Schema({
     email:{
       type: String,
@@ -44,7 +43,6 @@ userSchema.pre("save", async function(next){
     throw new Error("Password has not been hashed");
   }
 });
-
 
 userSchema.methods.comparePassword = async function(candidatePassword){
   return await bcrypt.compare(candidatePassword, this.password);

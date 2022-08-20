@@ -1,54 +1,16 @@
 import { Router } from "express";
-import { login, register } from "../controllers/auth.controller.js";
-import { validationAuth } from "../middlewares/validationAuth.js";
-import { body } from "express-validator";
+import { login, logout, prueba, refreshToken, register } from "../controllers/auth.controller.js";
+import { verifyToken } from "../middlewares/verifyUserToken.js";
+import { verifyRefreshToken } from "../middlewares/verifyRefreshToken.js";
+import { loginValidator, registerValidator } from "../middlewares/validatorAuth.js";
 const authRouter = Router();
 
-authRouter.post(
-  "/login", 
-  [
-    body("email")
-      .trim()
-      .not()
-      .isEmpty().withMessage("Email is empty")
-      .isEmail().withMessage("Incorrect email format")
-      .normalizeEmail(),
-  ],
-  validationAuth,
-  login
-);
+authRouter.post("/login", loginValidator, login);
 
-authRouter.post(
-  "/register",
-  [
-    body("email")
-      .trim()
-      .not()
-      .isEmpty().withMessage("Email is empty")
-      .isEmail().withMessage("Incorrect email format")
-      .normalizeEmail(),
-    body("password")
-      .trim()
-      .isLength({min: 8}).withMessage("At least 8 characters are required")
-      .custom((value,{req}) => {
-        if(value !== req.body.confirmPassword){
-          throw new Error("Password confirmation does not match password");
-        }
-        return value;
-      }),
-    body("name")
-      .trim()
-      .not()
-      .isEmpty()
-      .matches(/^[A-Za-z\s]+$/).withMessage("Name must be only letters"),
-    body("lastName")
-      .trim()
-      .not()
-      .isEmpty()
-      .matches(/^[A-Za-z\s]+$/).withMessage("Last Name must be only letters")
-  ],
-  validationAuth,
-  register
-);
+authRouter.post("/register", registerValidator, register);
+
+authRouter.get("/prueba", verifyToken ,prueba);
+authRouter.get("/refresh-token", verifyRefreshToken, refreshToken);
+authRouter.get("/logout", logout);
 
 export default authRouter;
