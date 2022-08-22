@@ -3,7 +3,6 @@ import { body } from "express-validator";
 
 export const validationAuth = (req, res, next) => { 
   const errorFormatter = ({ msg, param }) => {
-    // Build your resulting errors however you want! String, object, whatever - it works!c
     return {[param]: msg};
   };
   const errors = validationResult(req).formatWith(errorFormatter);
