@@ -77,7 +77,6 @@ export const refreshToken = (req, res) => {
   }
 }
 
-
 export const logout = (req,res) => {
   res.clearCookie("refresh_token_api_od");
   res.json({ok: true});
