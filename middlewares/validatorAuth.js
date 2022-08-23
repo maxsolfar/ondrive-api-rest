@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 export const validationAuth = (req, res, next) => { 
   const errorFormatter = ({ msg, param }) => {
@@ -13,11 +13,46 @@ export const validationAuth = (req, res, next) => {
   next();
 };
 
+/* Project Routes Validations */
+export const paramIdValidator = [
+  param("idProject", "Incorrect ID format")
+    .trim()
+    .notEmpty()
+    .escape(),
+  validationAuth
+];
+
+export const bodyProjectValidator = [
+  body("title")
+    .trim()
+    .notEmpty().withMessage("Title is empty"),
+  body("description")
+    .trim()
+    .notEmpty().withMessage("Description is empty"),
+  validationAuth
+];
+
+// Task Routes Validations */
+export const bodyTaskValidator = [
+  body("title")
+    .trim()
+    .notEmpty().withMessage("Title is empty"),
+  body("description")
+    .trim()
+    .notEmpty().withMessage("Description is empty"),
+  body("priority")
+    .trim()
+    .notEmpty().withMessage("Priority is empty"),
+  body("expiryDate")
+    .isDate().withMessage("Expiry date must be a date format"),
+  validationAuth
+];
+
+/* Auth Routes Validations */
 export const loginValidator = [
   body("email")
     .trim()
-    .not()
-    .isEmpty().withMessage("Email is empty")
+    .notEmpty().withMessage("Email is empty")
     .isEmail().withMessage("Incorrect email format")
     .normalizeEmail(),
   validationAuth
@@ -26,8 +61,7 @@ export const loginValidator = [
 export const registerValidator = [
   body("email")
     .trim()
-    .not()
-    .isEmpty().withMessage("Email is empty")
+    .notEmpty().withMessage("Email is empty")
     .isEmail().withMessage("Incorrect email format")
     .normalizeEmail(),
   body("password")
@@ -41,13 +75,11 @@ export const registerValidator = [
     }),
   body("name")
     .trim()
-    .not()
-    .isEmpty()
+    .notEmpty()
     .matches(/^[A-Za-z\s]+$/).withMessage("Name must be only letters"),
   body("lastName")
     .trim()
-    .not()
-    .isEmpty()
+    .notEmpty()
     .matches(/^[A-Za-z\s]+$/).withMessage("Last Name must be only letters"),
   validationAuth
 ];

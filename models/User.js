@@ -25,18 +25,6 @@ const userSchema = new Schema({
       required: true,
       trim: true,
     },
-    avatar: {
-      type: String,
-      required: false,
-      defaultValue:
-        "https://res.cloudinary.com/vombatidae/image/upload/v1658948667/default-avatar_cnydnd.jpg",
-    },
-    roles:[
-      {
-        ref: "Role",
-        type: Schema.Types.ObjectId,
-      },
-    ],
 },{
   timestamps: true,
   versionKey: false

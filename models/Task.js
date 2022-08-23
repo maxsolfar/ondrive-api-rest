@@ -23,12 +23,21 @@ const taskSchema = new Schema({
     type: [String],
     default: []
   },
+  expiryDate:{
+    type: Date,
+    required: true,
+  },
   done: {
     type: Boolean,
     default: false,
   },
-  project:{
+  projectId:{
     ref: "Project",
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  userId:{
+    ref: "User",
     type: Schema.Types.ObjectId,
     required: true,
   },

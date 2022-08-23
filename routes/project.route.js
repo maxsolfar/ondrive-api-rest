@@ -1,13 +1,15 @@
 import { Router } from "express";
-import { createProject, getProjects } from "../controllers/project.controller.js";
+import { createProject, deleteProjectById, updateProjectById, getProjectById, getProjects, getTasksByProject } from "../controllers/project.controller.js";
+import { paramIdValidator, bodyProjectValidator } from "../middlewares/validatorAuth.js";
 import { verifyToken } from "../middlewares/verifyUserToken.js";
 
 const projectRouter = Router();
 
-projectRouter.post("/", verifyToken, createProject);
+projectRouter.post("/", verifyToken, bodyProjectValidator, createProject);
 projectRouter.get("/", verifyToken , getProjects);
-/* projectRouter.get("/:idProject", prueba);
-projectRouter.patch("/:idProject", prueba);
-projectRouter.delete("/:idProject", prueba); */
+projectRouter.get("/:idProject", verifyToken, paramIdValidator, getProjectById);
+projectRouter.get("/tasks/:idProject", verifyToken, paramIdValidator, getTasksByProject);
+projectRouter.patch("/:idProject", verifyToken, paramIdValidator, bodyProjectValidator, updateProjectById);
+projectRouter.delete("/:idProject", verifyToken, paramIdValidator, deleteProjectById);
 
 export default projectRouter;

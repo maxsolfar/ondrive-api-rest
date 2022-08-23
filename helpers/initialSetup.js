@@ -1,4 +1,4 @@
-import Role from "../models/Role.js";
+/* import Role from "../models/Role.js";
 
 export const createRoles = async () => {
   try {
@@ -15,4 +15,4 @@ export const createRoles = async () => {
   } catch (error) {
     throw new Error({errors: "Roles could not be created"});
   }
-};
+}; */

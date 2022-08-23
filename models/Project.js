@@ -18,7 +18,7 @@ const projectSchema = new Schema({
   },
   color:{
     type: String,
-    required: true,
+    default: "#3fdd2e"
   },
   created: { 
     type: Date,
