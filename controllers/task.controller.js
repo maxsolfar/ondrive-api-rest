@@ -66,7 +66,7 @@ export const deleteTaskById = async (req,res) =>{
   const {idTask} = req.params;
   const id = req.uid;
   try {
-    const taskForDelete = await Project.findById(idTask);
+    const taskForDelete = await Task.findById(idTask);
     if(!taskForDelete){
       throwError(1301);
     }

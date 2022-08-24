@@ -14,6 +14,6 @@ export const verifyRefreshToken = (req, res, next) => {
     }
   }
   catch (error) {
-    return res.status(500).send({ errors: tokenErrorsCollection[error.message] || error.message });
+    return res.status(error.code || 500).send({ errors: tokenErrorsCollection[error.message] || error.message });
   }
 };

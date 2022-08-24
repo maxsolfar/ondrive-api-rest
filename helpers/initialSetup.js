@@ -16,3 +16,25 @@ export const createRoles = async () => {
     throw new Error({errors: "Roles could not be created"});
   }
 }; */
+import path from "path";
+import { fileURLToPath } from 'url';
+
+/*Swagger Initial Spec*/
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const swaggerSpec = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Task Manager API",
+      version: "1.0.0"
+    },
+    servers: [
+      {
+        url: `${process.env.URL}`
+      }
+    ]
+  },
+  apis: [`${path.join(__dirname, "../routes/*.route.js")}`]
+}

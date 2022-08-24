@@ -33,6 +33,15 @@ export const bodyProjectValidator = [
 ];
 
 // Task Routes Validations */
+
+export const paramIdValidatorTask = [
+  param("idTask", "Incorrect ID format")
+    .trim()
+    .notEmpty()
+    .escape(),
+  validationAuth
+];
+
 export const bodyTaskValidator = [
   body("title")
     .trim()
