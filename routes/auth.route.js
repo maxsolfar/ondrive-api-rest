@@ -32,11 +32,11 @@ const authRouter = Router();
  *        - name
  *        - lastName
  *      example:
- *        email: maxsolfar@gmail.com
- *        password: 123456
- *        confirmPassword: 123456
- *        name: Maximo
- *        lastName: Solis
+ *        email: super@gmail.com
+ *        password: "12345678"
+ *        confirmPassword: "123456"
+ *        name: "Super"
+ *        lastName: "Super"
  *    Login:
  *      type: object
  *      properties:
@@ -50,8 +50,8 @@ const authRouter = Router();
  *        - email
  *        - password
  *      example:
- *        email: maxsolfar@gmail.com
- *        password: 123456
+ *        email: prueba2@gmail.com
+ *        password: "12345678"
  */
 
 /**

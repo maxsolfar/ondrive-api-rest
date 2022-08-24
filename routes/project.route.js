@@ -122,6 +122,13 @@ projectRouter.get("/:idProject", verifyToken, paramIdValidator, getProjectById);
  *      -  bearerAuth: []
  *    summary: Return Tasks for Project
  *    tags: [Get Task by Project] 
+ *    parameters:
+ *      - in: path
+ *        name: idProject
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: the project id  
  *    responses:
  *      200:
  *        description: Tasks by Project!    
