@@ -17,7 +17,7 @@ export const createRoles = async () => {
   }
 }; */
 import path from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
 /*Swagger Initial Spec*/
 const __filename = fileURLToPath(import.meta.url);
@@ -28,18 +28,13 @@ export const swaggerSpec = {
     openapi: "3.0.0",
     info: {
       title: "Task Manager API",
-      version: "1.0.0"
+      version: "1.0.0",
     },
-    servers: [
-      {
-        url: `${process.env.URL}`,
-        description: "Local dev"
-      },
-      {
-        url: `${process.env.URLP}`,
-        description: "Production dev"
-      }
-    ]
+    host: "https://task-manager-api-rest.herokuapp.com",
+    basePath: "/",
+    schemes: ["https"],
+    consumes: ["application/json"],
+    produces: ["application/json"],
   },
-  apis: [`${path.join(__dirname, "../routes/*.route.js")}`]
-}
+  apis: [`${path.join(__dirname, "../routes/*.route.js")}`],
+};
