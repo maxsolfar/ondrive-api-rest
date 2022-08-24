@@ -32,7 +32,12 @@ export const swaggerSpec = {
     },
     servers: [
       {
-        url: `${process.env.URL}`
+        url: `${process.env.URL}`,
+        description: "Local dev"
+      },
+      {
+        url: `${process.env.URLP}`,
+        description: "Production dev"
       }
     ]
   },
