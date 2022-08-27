@@ -23,7 +23,8 @@ app.use(cors({
     else{
       return callback(`Error de CORS ${origin} no autorizado`);
     }
-  }
+  },
+  credentials: true,
 }));
 app.use(express.json());
 app.use(cookieParser());
