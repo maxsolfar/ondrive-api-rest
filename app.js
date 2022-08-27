@@ -16,6 +16,7 @@ const app = express();
 
 /* Middlewares */
 app.use(cors({
+  credentials: true,
   origin: function(origin, callback){
     if(!origin || whiteList.includes(origin)){
       return callback(null, origin);
@@ -24,7 +25,6 @@ app.use(cors({
       return callback(`Error de CORS ${origin} no autorizado`);
     }
   },
-  credentials: true,
 }));
 app.use(express.json());
 app.use(cookieParser());
